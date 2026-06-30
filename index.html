@@ -127,6 +127,49 @@
 
       <h2 class="title is-3">Publications</h2>
 
+      <!-- SpheRoPE: Zero-Shot Optimization-Free 360° Panorama Generation -->
+      
+      <div class="publication-block columns is-vcentered">
+        <div class="column is-3">
+          <div class="publication-mouse-animate">
+            <div id="spherope-viewer" style="width:100%;height:192px;max-height:220px;"></div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="content">
+            <h3 class="publication-title"><a href="https://orhir.github.io/SpheRoPE/">SpheRoPE: Zero-Shot Optimization-Free 360° Panorama Generation with Spherical RoPE</a></h3>
+            <div class="publication-venue">UNDER REVIEW</div>
+            <div class="publication-authors">
+              <span class="author-block author-block-"><b>Or Hirschorn</b></span>,
+              <span class="author-block author-block-"><b>Aaron Olender</b></span>,
+              <span class="author-block author-block-"><b>Eli Alshan</b></span>,
+              <span class="author-block author-block-"><b>Ianir Ideses</b></span>,
+              <span class="author-block author-block-"><b>Lior Fritz</b></span>,
+              <span class="author-block author-block-"><b>Sagie Benaim</b></span>
+            </div>
+
+            <p class="publication-description">
+              We present a zero-shot, training-free and optimization-free framework for generating 360° panoramic images and videos by directly injecting spherical priors into pre-trained diffusion transformers. Our Spherical RoPE re-parameterizes low-frequency positional channels as 3D Cartesian coordinates and harmonically quantizes high-frequency channels, enforcing exact periodicity and polar convergence while preserving pretrained local priors.
+            </p>
+
+            <div class="publication-links buttons">
+              <a class="external-link button is-small is-rounded" href="https://orhir.github.io/SpheRoPE/">
+                <span class="icon"><i class="fas fa-globe-europe"></i></span>
+                <span>Project Page</span>
+              </a>
+              <a class="external-link button is-small is-rounded" href="#">
+                <span class=" icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv (coming)</span>
+              </a>
+              <a class="external-link button is-small is-rounded" href="https://github.com/orhir/SpheRoPE">
+                <span class="icon"><i class="fas fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
 
       <!-- Multi-View Foundation Models -->
@@ -168,6 +211,7 @@
       </div>
       
       <!-- Splatent: Splatting Diffusion Latents for Novel View Synthesis -->
+      
       <div class="publication-block columns is-vcentered">
         <div class="column is-3">
           <div class="publication-mouse-animate">
@@ -660,5 +704,51 @@ We show that the VAE space of current diffusion models is not 3D consistent. To 
   </footer>
 
 </body>
+
+<script>
+// Initialize local Pannellum viewer for SpheRoPE teaser (uses local copied panorama)
+(function(){
+  try{
+    // hide embedded base64 img if present
+    var img = document.querySelector('#papers .publication-block .publication-mouse-animate img[src^="data:image/jpeg;base64"]');
+    if(img) img.style.display = 'none';
+
+    var container = document.querySelector('#papers .publication-block .publication-mouse-animate');
+    if(!container) return;
+
+    // create viewer container (only if not already present)
+    if(!document.getElementById('spherope-viewer')){
+      var viewerDiv = document.createElement('div');
+      viewerDiv.id = 'spherope-viewer';
+      viewerDiv.style.width = '100%';
+      viewerDiv.style.height = '220px';
+      viewerDiv.style.background = '#000';
+      container.insertBefore(viewerDiv, container.firstChild);
+    }
+
+    // load pannellum CSS
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css';
+    document.head.appendChild(link);
+
+    // load pannellum script and initialize viewer with local image
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
+    s.onload = function(){
+      try{
+        pannellum.viewer('spherope-viewer', {
+          type: 'equirectangular',
+          panorama: './static/images/projects/spherope_360.jpg',
+          autoLoad: true,
+          showZoomCtrl: false,
+          showFullscreenCtrl: false
+        });
+      }catch(e){console.error('pannellum init failed', e)}
+    };
+    document.body.appendChild(s);
+  }catch(e){console.error(e)}
+})();
+</script>
 
 </html>
